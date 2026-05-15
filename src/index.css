@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@theme {
+  --color-warm-ivory: #ECF0F5;
+  --color-warm-sand: #C8D4E2;
+  --color-soft-sage: #C0D4E0;
+  --color-blush-pink: #C8D8EA;
+  --color-cool-blue: #B0C4DB;
+  --color-warm-brown: #3D4F63;
+  --color-warm-taupe: #8A9BB5;
+  --color-divider: #DDE4EC;
+  --color-white: #FFFFFF;
+
+  --font-title: 'ZCOOL KuaiLe', 'Noto Serif SC', serif;
+  --font-display: 'Quicksand', sans-serif;
+  --font-body: 'Noto Sans SC', sans-serif;
+
+  --radius-card: 20px;
+  --radius-btn: 12px;
+  --radius-img: 16px;
+  --radius-input: 12px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-body);
+  font-weight: 300;
+  color: var(--color-warm-brown);
+  background: var(--color-warm-ivory);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-warm-ivory);
+}
+
+#root {
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-title);
+  letter-spacing: 0.05em;
+}
+
+button {
+  font-family: var(--font-body);
+  font-weight: 400;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, textarea {
+  font-family: var(--font-body);
+  font-weight: 300;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-warm-sand);
+  border-radius: 4px;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
