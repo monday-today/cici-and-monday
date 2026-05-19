@@ -59,6 +59,7 @@ export function ChinaMap({ travels, onSelect }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<L.Map | null>(null)
   const layersRef = useRef<L.Layer[]>([])
+  const geoLayerRef = useRef<L.GeoJSON | null>(null)
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return
@@ -76,19 +77,37 @@ export function ChinaMap({ travels, onSelect }: Props) {
       maxBoundsViscosity: 1.0,
     })
 
-    // Style=1: minimal outline-only tiles — line art, no fill colors
-    L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=1&x={x}&y={y}&z={z}', {
+    L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}', {
       subdomains: ['1', '2', '3', '4'],
       maxZoom: 18,
     }).addTo(map)
 
+    // Load China province borders from DataV.GeoAtlas (Alibaba, accessible in China)
+    fetch('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json')
+      .then(r => r.json())
+      .then(geo => {
+        const layer = L.geoJSON(geo, {
+          style: {
+            color: C.brown,
+            weight: 1.2,
+            opacity: 0.3,
+            fillColor: C.cheese,
+            fillOpacity: 0.04,
+            dashArray: '4 6',
+          },
+          interactive: false,
+        }).addTo(map)
+        geoLayerRef.current = layer
+      })
+      .catch(() => {})
+
     const container = map.getContainer()
 
-    // Warm tint overlay — shifts the whole tile tone toward parchment
+    // Warm tint overlay
     const warmTint = document.createElement('div')
     warmTint.style.cssText = `
       position:absolute;inset:0;z-index:300;pointer-events:none;
-      background:${C.cheese};opacity:0.12;mix-blend-mode:multiply;
+      background:${C.cheese};opacity:0.1;mix-blend-mode:multiply;
     `
     container.appendChild(warmTint)
 
@@ -101,7 +120,7 @@ export function ChinaMap({ travels, onSelect }: Props) {
     `
     container.appendChild(grain)
 
-    // Vignette — darkens edges like aged paper
+    // Vignette
     const vignette = document.createElement('div')
     vignette.style.cssText = `
       position:absolute;inset:0;z-index:550;pointer-events:none;
@@ -115,7 +134,6 @@ export function ChinaMap({ travels, onSelect }: Props) {
       .leaflet-tile {
         filter: sepia(0.7) saturate(0.22) brightness(1.08) contrast(0.75) hue-rotate(-8deg) !important;
         -webkit-font-smoothing: antialiased;
-        image-rendering: auto;
       }
     `
     containerRef.current.appendChild(style)
