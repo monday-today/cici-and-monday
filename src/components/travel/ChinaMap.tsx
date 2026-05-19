@@ -59,7 +59,6 @@ export function ChinaMap({ travels, onSelect }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<L.Map | null>(null)
   const layersRef = useRef<L.Layer[]>([])
-  const geoLayerRef = useRef<L.GeoJSON | null>(null)
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return
@@ -77,45 +76,38 @@ export function ChinaMap({ travels, onSelect }: Props) {
       maxBoundsViscosity: 1.0,
     })
 
+    // Subtle tile layer — pushed way back with low opacity
     L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}', {
       subdomains: ['1', '2', '3', '4'],
       maxZoom: 18,
+      opacity: 0.35,
     }).addTo(map)
 
-    // Load China province borders from DataV.GeoAtlas (Alibaba, accessible in China)
+    // Province borders — the main visual feature
     fetch('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json')
       .then(r => r.json())
       .then(geo => {
-        const layer = L.geoJSON(geo, {
+        L.geoJSON(geo, {
           style: {
             color: C.brown,
-            weight: 1.2,
-            opacity: 0.3,
+            weight: 1.5,
+            opacity: 0.5,
             fillColor: C.cheese,
-            fillOpacity: 0.04,
-            dashArray: '4 6',
+            fillOpacity: 0.06,
+            dashArray: '5 8',
           },
           interactive: false,
         }).addTo(map)
-        geoLayerRef.current = layer
       })
       .catch(() => {})
 
     const container = map.getContainer()
 
-    // Warm tint overlay
-    const warmTint = document.createElement('div')
-    warmTint.style.cssText = `
-      position:absolute;inset:0;z-index:300;pointer-events:none;
-      background:${C.cheese};opacity:0.1;mix-blend-mode:multiply;
-    `
-    container.appendChild(warmTint)
-
     // Paper grain
     const grain = document.createElement('div')
     grain.style.cssText = `
       position:absolute;inset:0;z-index:500;pointer-events:none;
-      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
       mix-blend-mode:multiply;
     `
     container.appendChild(grain)
@@ -124,15 +116,23 @@ export function ChinaMap({ travels, onSelect }: Props) {
     const vignette = document.createElement('div')
     vignette.style.cssText = `
       position:absolute;inset:0;z-index:550;pointer-events:none;
-      background:radial-gradient(ellipse at center, transparent 55%, rgba(92,64,51,0.2) 100%);
+      background:radial-gradient(ellipse at center, transparent 50%, rgba(92,64,51,0.25) 100%);
     `
     container.appendChild(vignette)
+
+    // Warm wash over everything
+    const wash = document.createElement('div')
+    wash.style.cssText = `
+      position:absolute;inset:0;z-index:600;pointer-events:none;
+      background:linear-gradient(135deg, ${C.cheese}22, ${C.cream}18, ${C.cheese}22);
+    `
+    container.appendChild(wash)
 
     const style = document.createElement('style')
     style.textContent = `
       .leaflet-container { background: ${C.parchment}; }
       .leaflet-tile {
-        filter: sepia(0.7) saturate(0.22) brightness(1.08) contrast(0.75) hue-rotate(-8deg) !important;
+        filter: sepia(0.85) saturate(0.12) brightness(1.12) contrast(0.7) hue-rotate(-10deg) !important;
         -webkit-font-smoothing: antialiased;
       }
     `
