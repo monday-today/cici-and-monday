@@ -52,9 +52,15 @@ export function DiaryList({ entries, onDelete, onEdit, onView }: Props) {
                   </div>
                   {/* Right: photos — same height as text, keep original ratio */}
                   {entry.image_urls.length > 0 && (
-                    <div className="flex flex-col gap-2 shrink-0 overflow-hidden" style={{ maxWidth: '30%' }}>
+                    <div
+                      className="shrink-0 grid gap-2 min-h-0"
+                      style={{
+                        maxWidth: '30%',
+                        gridTemplateRows: `repeat(${entry.image_urls.length}, 1fr)`,
+                      }}
+                    >
                       {entry.image_urls.map((url, i) => (
-                        <div key={i} className="flex-1 min-h-0">
+                        <div key={i} className="min-h-0">
                           <img src={url} alt="" className="w-full h-full rounded-xl object-contain" />
                         </div>
                       ))}
