@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Modal } from '../ui/Modal'
 import { ImageUpload } from '../ui/ImageUpload'
 import { uploadImage } from '../../hooks/useSupabase'
+import { lookupCity } from '../../lib/cityCoordinates'
 
 interface Props {
   open: boolean
@@ -38,6 +39,15 @@ export function AddTravelModal({ open, onClose, onSave }: Props) {
     setLat(loc.lat)
     setLng(loc.lng)
   }
+
+  // Auto-detect coordinates when title changes
+  useEffect(() => {
+    const coords = lookupCity(title)
+    if (coords) {
+      setLat(coords[0])
+      setLng(coords[1])
+    }
+  }, [title])
 
   const handleSave = async () => {
     if (!title || saving) return

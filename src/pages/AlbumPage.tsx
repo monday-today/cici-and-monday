@@ -40,33 +40,37 @@ export default function AlbumPage() {
   return (
     <PageTransition>
       <BottomNav />
-      <div className="px-5 pt-8 pb-4 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-title text-warm-brown">相册</h1>
-          <p className="text-sm text-warm-taupe/60 font-light mt-1">定格每一个美好瞬间</p>
+      <div style={{ padding: 'clamp(1rem, 5vw, 2.5rem) clamp(1rem, 4vw, 1.5rem)', paddingBottom: '5rem' }}>
+        <div className="mb-6">
+          <div className="flex items-center gap-2">
+            <img src="https://cdn.jsdelivr.net/npm/openmoji@14.0.0/color/svg/1F4F7.svg" alt="" className="w-6 h-6" />
+            <h1 className="font-title text-white tracking-wider" style={{ fontSize: 'clamp(1.2rem, 4vw, 1.6rem)' }}>相册</h1>
+          </div>
+          <p className="text-white/30 text-[10px] tracking-[0.2em] mt-0.5 ml-8" style={{ fontFamily: "'Montserrat', sans-serif" }}>OUR MOMENTS</p>
         </div>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={handleUpload}
-          disabled={uploading}
-          className="w-10 h-10 rounded-full flex items-center justify-center shadow-md"
-          style={{ background: 'linear-gradient(135deg, #F2D0C4, #E8D5C4)' }}
-        >
-          {uploading ? (
-            <span className="w-4 h-4 border-2 border-warm-brown/30 border-t-warm-brown rounded-full animate-spin" />
-          ) : (
-            <Upload size={20} className="text-warm-brown" />
-          )}
-        </motion.button>
-      </div>
 
-      <div className="px-5">
         {loading ? null : !photos || photos.length === 0 ? (
-          <EmptyState icon="📷" message="还没有照片，点击右上角上传吧" />
+          <EmptyState icon="1F4F7" message="还没有照片，点击下方按钮上传吧" />
         ) : (
           <PhotoGrid photos={photos} onSelect={setLightbox} onDelete={removePhoto} />
         )}
+
+        <div className="flex justify-center mt-6">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleUpload}
+            disabled={uploading}
+            className="w-12 h-12 rounded-full flex items-center justify-center shadow-md"
+            style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.03))' }}
+          >
+            {uploading ? (
+              <span className="w-4 h-4 border-2 border-warm-brown/30 border-t-warm-brown rounded-full animate-spin" />
+            ) : (
+              <Upload size={22} className="text-warm-brown" />
+            )}
+          </motion.button>
+        </div>
       </div>
 
       <PhotoLightbox photo={lightbox} onClose={() => setLightbox(null)} />

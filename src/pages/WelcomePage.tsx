@@ -18,27 +18,31 @@ export default function WelcomePage() {
       exit={{ opacity: 0, y: -30 }}
       transition={{ duration: 0.6 }}
     >
+      {/* Cool blue-gray background */}
       <div
         className="absolute inset-0"
-        style={{ background: '#E4ECF2' }}
+        style={{ background: '#623e2a' }}
       />
+
+      {/* Background photo */}
       <div
-        className="absolute"
+        className="absolute inset-0"
         style={{
-          top: '15%',
-          left: '15%',
-          right: '15%',
-          bottom: '15%',
+          backgroundImage: `url(${import.meta.env.BASE_URL}images/微信图片_20260515031637_736_79.jpg)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.3,
         }}
-      >
-        <div
-          className="w-full h-full bg-cover bg-center bg-no-repeat rounded-[32px] shadow-lg"
-          style={{
-            backgroundImage: 'url(/images/微信图片_20260515031637_736_79.jpg)',
-            opacity: 0.3,
-          }}
-        />
-      </div>
+      />
+
+      {/* Gradient overlay */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: 'linear-gradient(to top, rgba(98,62,42,0.8), rgba(98,62,42,0.1))',
+        }}
+      />
 
       <FloatingHearts />
 

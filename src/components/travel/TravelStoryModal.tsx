@@ -30,7 +30,7 @@ export function TravelStoryModal({ travel, onClose, onDelete }: Props) {
         animate={{ y: 0 }}
         exit={{ y: '100%' }}
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-        className="relative bg-white rounded-t-3xl sm:rounded-3xl w-full sm:max-w-md
+        className="relative bg-[#4a3020] rounded-t-3xl sm:rounded-3xl w-full sm:max-w-md
                    max-h-[85vh] overflow-y-auto shadow-2xl"
       >
         {images.length > 0 && (

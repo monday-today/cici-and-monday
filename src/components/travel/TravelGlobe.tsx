@@ -68,8 +68,8 @@ export function TravelGlobe({ travels, onSelect }: Props) {
           className="w-full h-full min-w-[600px] min-h-[300px]"
           preserveAspectRatio="xMidYMid meet"
         >
-          <rect width="1200" height="600" fill="#ECF0F5" rx="8" />
-          <g fill="#C8D4E2" opacity="0.7">
+          <rect width="1200" height="600" fill="#623e2a" rx="8" />
+          <g fill="rgba(255,255,255,0.12)" opacity="0.7">
             {/* Simplified continent shapes */}
             {/* North America */}
             <path d="M150 80 Q250 40 350 50 Q400 60 380 120 Q350 200 300 250 Q250 300 200 280 Q120 250 100 180 Q80 120 150 80Z" />

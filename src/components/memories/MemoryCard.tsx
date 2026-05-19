@@ -13,7 +13,7 @@ export function MemoryCard({ memory, onDelete, compact }: Props) {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`rounded-card bg-white border border-warm-sand/20 shadow-sm group
+      className={`rounded-card bg-white/10 backdrop-blur-sm border border-white/10 shadow-sm group
                   ${compact ? 'p-3' : 'p-5'}`}
     >
       {memory.image_urls.length > 0 && (

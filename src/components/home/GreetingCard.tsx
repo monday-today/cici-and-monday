@@ -9,7 +9,7 @@ export function GreetingCard() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-card bg-white p-6 border border-warm-sand/20 shadow-sm"
+      className="rounded-card bg-white/10 backdrop-blur-sm p-6 border border-white/10 shadow-sm"
     >
       <p className="mb-2" style={{ fontSize: 'clamp(2rem, 8vw, 3.5rem)' }}>{emoji}</p>
       <h2 className="font-title text-warm-brown" style={{ fontSize: 'clamp(1.25rem, 5vw, 2rem)' }}>

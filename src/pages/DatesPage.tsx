@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { Plus } from 'lucide-react'
 import { PageTransition } from '../components/ui/PageTransition'
 import { BottomNav } from '../components/ui/BottomNav'
 import { EmptyState } from '../components/ui/EmptyState'
@@ -8,52 +6,84 @@ import { DateCard } from '../components/dates/DateCard'
 import { AddDateModal } from '../components/dates/AddDateModal'
 import { useImportantDates } from '../hooks/useSupabase'
 
+const CALENDAR_ICON = 'https://cdn.jsdelivr.net/npm/openmoji@14.0.0/color/svg/1F4C5.svg'
+
 export default function DatesPage() {
-  const { dates, loading, addDate, removeDate } = useImportantDates()
+  const { dates, loading, addDate, removeDate, updateDate } = useImportantDates()
   const [showAdd, setShowAdd] = useState(false)
 
-  const sorted = [...(dates || [])].sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-  )
+  const sorted = [...(dates || [])].sort((a, b) => {
+    const ao = a.sort_order ?? 0
+    const bo = b.sort_order ?? 0
+    if (ao !== bo) return ao - bo
+    return new Date(a.date).getTime() - new Date(b.date).getTime()
+  })
+
+  const moveItem = async (idx: number, dir: -1 | 1) => {
+    const target = idx + dir
+    if (target < 0 || target >= sorted.length) return
+    const a = sorted[idx]
+    const b = sorted[target]
+    await updateDate(a.id, { sort_order: (b.sort_order ?? 0) })
+    await updateDate(b.id, { sort_order: (a.sort_order ?? 0) })
+  }
 
   return (
     <PageTransition>
       <BottomNav />
-      <div className="px-5 pt-8 pb-4 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-title text-warm-brown">纪念日 & 生日</h1>
-          <p className="text-sm text-warm-taupe/60 font-light mt-1">每一个重要的日子都值得记住</p>
+      <div style={{ padding: 'clamp(1rem, 5vw, 2.5rem) clamp(1rem, 4vw, 1.5rem)', paddingBottom: '5rem' }}>
+        <div className="mb-6">
+          <div className="flex items-center gap-2">
+            <img src={CALENDAR_ICON} alt="" className="w-6 h-6" />
+            <h1 className="font-title text-white tracking-wider" style={{ fontSize: 'clamp(1.2rem, 4vw, 1.6rem)' }}>
+              纪念日
+            </h1>
+          </div>
+          <p className="text-white/30 text-[10px] tracking-[0.2em] mt-0.5 ml-8" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+            SPECIAL DAYS
+          </p>
         </div>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setShowAdd(true)}
-          className="w-10 h-10 rounded-full flex items-center justify-center shadow-md"
-          style={{ background: 'linear-gradient(135deg, #F2D0C4, #E8D5C4)' }}
-        >
-          <Plus size={20} className="text-warm-brown" />
-        </motion.button>
-      </div>
 
-      <div className="px-5 space-y-3">
-        {loading ? null : sorted.length === 0 ? (
-          <EmptyState icon="📅" message="还没有重要日期，点击右上角添加吧" />
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <span className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+          </div>
+        ) : sorted.length === 0 ? (
+          <EmptyState icon="" message="还没有重要日期" />
         ) : (
-          sorted.map((d) => (
-            <DateCard
-              key={d.id}
-              date={d}
-              onDelete={() => removeDate(d.id)}
-            />
-          ))
+          <div className="space-y-3">
+            {sorted.map((d, i) => (
+              <DateCard
+                key={d.id}
+                date={d}
+                onDelete={() => removeDate(d.id)}
+                onUpdate={(id, updates) => updateDate(id, updates)}
+                onMoveUp={() => moveItem(i, -1)}
+                onMoveDown={() => moveItem(i, 1)}
+                isFirst={i === 0}
+                isLast={i === sorted.length - 1}
+              />
+            ))}
+          </div>
         )}
+
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={() => setShowAdd(true)}
+            className="rounded-full bg-white/15 hover:bg-white/25 border border-white/20 text-white/90 px-5 py-2.5 transition-all text-sm"
+            style={{ fontFamily: "'Montserrat', sans-serif" }}
+          >
+            + 添加
+          </button>
+        </div>
       </div>
 
       <AddDateModal
         open={showAdd}
         onClose={() => setShowAdd(false)}
         onSave={async (item) => {
-          await addDate(item as unknown as Record<string, unknown>)
+          const maxOrder = Math.max(0, ...(dates || []).map(d => d.sort_order ?? 0))
+          await addDate({ ...item, sort_order: maxOrder - 1 } as Record<string, unknown>)
           setShowAdd(false)
         }}
       />

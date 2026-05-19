@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  --color-warm-ivory: #ECF0F5;
-  --color-warm-sand: #C8D4E2;
-  --color-soft-sage: #C0D4E0;
-  --color-blush-pink: #C8D8EA;
-  --color-cool-blue: #B0C4DB;
-  --color-warm-brown: #3D4F63;
-  --color-warm-taupe: #8A9BB5;
-  --color-divider: #DDE4EC;
+  --color-warm-ivory: #623e2a;
+  --color-warm-sand: rgba(255, 255, 255, 0.2);
+  --color-soft-sage: rgba(255, 255, 255, 0.12);
+  --color-blush-pink: rgba(255, 255, 255, 0.1);
+  --color-cool-blue: rgba(255, 255, 255, 0.15);
+  --color-warm-brown: #FFFFFF;
+  --color-warm-taupe: rgba(255, 255, 255, 0.55);
+  --color-divider: rgba(255, 255, 255, 0.1);
   --color-white: #FFFFFF;
 
-  --font-title: 'ZCOOL KuaiLe', 'Noto Serif SC', serif;
-  --font-display: 'Quicksand', sans-serif;
-  --font-body: 'Noto Sans SC', sans-serif;
+  --font-title: 'Playfair Display', serif;
+  --font-display: 'Montserrat', sans-serif;
+  --font-body: 'Montserrat', sans-serif;
 
   --radius-card: 20px;
   --radius-btn: 12px;
@@ -30,8 +30,8 @@
 html {
   font-family: var(--font-body);
   font-weight: 300;
-  color: var(--color-warm-brown);
-  background: var(--color-warm-ivory);
+  color: rgba(255, 255, 255, 0.9);
+  background: #623e2a;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
@@ -41,7 +41,7 @@ html {
 body {
   height: 100%;
   overflow: hidden;
-  background: var(--color-warm-ivory);
+  background: #623e2a;
 }
 
 #root {
@@ -68,7 +68,6 @@ input, textarea {
   font-weight: 300;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 4px;
 }
@@ -76,7 +75,7 @@ input, textarea {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-warm-sand);
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 4px;
 }
 

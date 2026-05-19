@@ -1,35 +1,48 @@
 import { motion } from 'framer-motion'
 
-const title = '宝宝520快乐！'
+const chars = '宝宝520快乐！'.split('')
 
 const charVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: (i: number) => ({
+  hidden: { opacity: 0, y: 60 },
+  visible: {
     opacity: 1,
     y: 0,
     transition: {
-      delay: 0.5 + i * 0.12,
-      duration: 0.7,
+      duration: 0.8,
       ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
     },
-  }),
+  },
+}
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.5,
+    },
+  },
 }
 
 export function TitleReveal() {
   return (
-    <h1 className="text-[10vw] text-warm-ivory font-title tracking-[0.15em] select-none">
-      {title.split('').map((char, i) => (
+    <motion.h1
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="font-title tracking-[0.15em] select-none"
+      style={{ fontSize: 'clamp(48px, 10vw, 72px)', color: '#FFFFFF' }}
+    >
+      {chars.map((char, i) => (
         <motion.span
           key={i}
-          custom={i}
           variants={charVariants}
-          initial="hidden"
-          animate="visible"
-          className="inline-block drop-shadow-[0_2px_8px_rgba(92,74,61,0.3)]"
+          className="inline-block"
+          style={{ textShadow: '0 2px 12px rgba(255,255,255,0.12)' }}
         >
           {char}
         </motion.span>
       ))}
-    </h1>
+    </motion.h1>
   )
 }

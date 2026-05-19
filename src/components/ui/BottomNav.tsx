@@ -11,8 +11,8 @@ export function BottomNav() {
   const location = useLocation()
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg
-                     border-t border-divider">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#4a3020]/95 backdrop-blur-lg
+                     border-t border-white/10">
       <div className="flex items-center justify-around w-full px-4" style={{ height: 'clamp(3.5rem, 10vh, 5rem)' }}>
         {tabs.map((tab) => {
           const active = location.pathname === tab.path

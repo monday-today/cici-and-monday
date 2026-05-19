@@ -1,4 +1,5 @@
-const PHOTOS = Array.from({ length: 7 }, (_, i) => `/images/marquee/${i + 1}.jpg`)
+const BASE = import.meta.env.BASE_URL
+const PHOTOS = Array.from({ length: 7 }, (_, i) => `${BASE}images/marquee/${i + 1}.jpg`)
 
 export function PhotoMarquee() {
   return (
@@ -24,7 +25,7 @@ export function PhotoMarquee() {
         className="absolute top-0 bottom-0 left-0 pointer-events-none"
         style={{
           width: '12%',
-          background: 'linear-gradient(to left, transparent, #ECF0F5)',
+          background: 'linear-gradient(to left, transparent, #623e2a)',
         }}
       />
     </div>

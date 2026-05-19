@@ -18,7 +18,7 @@ export function TimelineView({ memories, onDelete }: Props) {
         {sorted.map((m) => (
           <div key={m.id} className="relative">
             <div
-              className="absolute -left-[21px] top-4 w-[17px] h-[17px] rounded-full border-2 border-warm-sand bg-white"
+              className="absolute -left-[21px] top-4 w-[17px] h-[17px] rounded-full border-2 border-white/20 bg-[#4a3020]"
             />
             <MemoryCard memory={m} onDelete={() => onDelete(m.id)} />
           </div>

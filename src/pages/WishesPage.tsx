@@ -28,7 +28,7 @@ export default function WishesPage() {
           whileTap={{ scale: 0.95 }}
           onClick={() => setShowAdd(true)}
           className="w-10 h-10 rounded-full flex items-center justify-center shadow-md"
-          style={{ background: 'linear-gradient(135deg, #F2D0C4, #E8D5C4)' }}
+          style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.03))' }}
         >
           <Plus size={20} className="text-warm-brown" />
         </motion.button>
@@ -36,7 +36,7 @@ export default function WishesPage() {
 
       <div className="px-5 space-y-4">
         {loading ? null : !wishes || wishes.length === 0 ? (
-          <EmptyState icon="✨" message="还没有心愿，一起写下你们的愿望吧" />
+          <EmptyState icon="2728" message="还没有心愿，一起写下你们的愿望吧" />
         ) : (
           <>
             {pending.length > 0 && (

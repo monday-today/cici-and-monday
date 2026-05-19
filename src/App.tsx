@@ -6,11 +6,11 @@ import AuthPage from './pages/AuthPage'
 import WelcomePage from './pages/WelcomePage'
 import HomePage from './pages/HomePage'
 import DatesPage from './pages/DatesPage'
-import MemoriesPage from './pages/MemoriesPage'
+import FoodPage from './pages/FoodPage'
 import TravelPage from './pages/TravelPage'
 import DiaryPage from './pages/DiaryPage'
 import AlbumPage from './pages/AlbumPage'
-import WishesPage from './pages/WishesPage'
+import TimelinePage from './pages/TimelinePage'
 
 export default function App() {
   return (
@@ -22,11 +22,11 @@ export default function App() {
             <Route path="/" element={<AuthGate><WelcomePage /></AuthGate>} />
             <Route path="/home" element={<AuthGate><HomePage /></AuthGate>} />
             <Route path="/dates" element={<AuthGate><DatesPage /></AuthGate>} />
-            <Route path="/memories" element={<AuthGate><MemoriesPage /></AuthGate>} />
+            <Route path="/food" element={<AuthGate><FoodPage /></AuthGate>} />
             <Route path="/travel" element={<AuthGate><TravelPage /></AuthGate>} />
             <Route path="/diary" element={<AuthGate><DiaryPage /></AuthGate>} />
             <Route path="/album" element={<AuthGate><AlbumPage /></AuthGate>} />
-            <Route path="/wishes" element={<AuthGate><WishesPage /></AuthGate>} />
+            <Route path="/timeline" element={<AuthGate><TimelinePage /></AuthGate>} />
           </Routes>
         </AnimatePresence>
       </AuthProvider>

@@ -5,20 +5,22 @@ import { Heart, Cake } from 'lucide-react'
 interface Props {
   open: boolean
   onClose: () => void
-  onSave: (item: { title: string; date: string; type: string; icon?: string }) => void
+  onSave: (item: { title: string; date: string; type: string; count_mode?: string; icon?: string }) => void
 }
 
 export function AddDateModal({ open, onClose, onSave }: Props) {
   const [title, setTitle] = useState('')
   const [date, setDate] = useState('')
   const [type, setType] = useState('anniversary')
+  const [countMode, setCountMode] = useState('countdown')
 
   const handleSave = () => {
     if (!title || !date) return
-    onSave({ title, date, type })
+    onSave({ title, date, type, count_mode: countMode })
     setTitle('')
     setDate('')
     setType('anniversary')
+    setCountMode('countdown')
   }
 
   return (
@@ -41,6 +43,28 @@ export function AddDateModal({ open, onClose, onSave }: Props) {
                              : 'border-warm-sand/20 text-warm-taupe/60'}`}
               >
                 <opt.icon size={18} />
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <label className="text-sm text-warm-taupe font-light block mb-2">计数方式</label>
+          <div className="flex gap-3">
+            {[
+              { value: 'countdown', label: '倒数日' },
+              { value: 'anniversary', label: '纪念日' },
+            ].map(opt => (
+              <button
+                key={opt.value}
+                onClick={() => setCountMode(opt.value)}
+                className={`flex-1 h-12 rounded-xl flex items-center justify-center gap-2
+                           transition-all border text-sm font-medium
+                           ${countMode === opt.value
+                             ? 'border-warm-sand bg-warm-sand/20 text-warm-brown'
+                             : 'border-warm-sand/20 text-warm-taupe/60'}`}
+              >
                 {opt.label}
               </button>
             ))}

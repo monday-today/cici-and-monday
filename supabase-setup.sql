@@ -127,6 +127,95 @@ CREATE POLICY "认证用户可更新" ON wishes FOR UPDATE USING (auth.role() = 
 CREATE POLICY "认证用户可删除" ON wishes FOR DELETE USING (auth.role() = 'authenticated');
 
 -- ============================================
+-- 7. 弹幕消息表
+CREATE TABLE IF NOT EXISTS danmaku (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  text TEXT NOT NULL,
+  likes INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+ALTER TABLE danmaku ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "认证用户可读" ON danmaku;
+DROP POLICY IF EXISTS "认证用户可写" ON danmaku;
+DROP POLICY IF EXISTS "认证用户可更新" ON danmaku;
+DROP POLICY IF EXISTS "认证用户可删除" ON danmaku;
+CREATE POLICY "认证用户可读" ON danmaku FOR SELECT USING (auth.role() = 'authenticated');
+CREATE POLICY "认证用户可写" ON danmaku FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "认证用户可更新" ON danmaku FOR UPDATE USING (auth.role() = 'authenticated');
+CREATE POLICY "认证用户可删除" ON danmaku FOR DELETE USING (auth.role() = 'authenticated');
+
+ALTER TABLE important_dates ADD COLUMN IF NOT EXISTS photo_urls TEXT DEFAULT '';
+ALTER TABLE important_dates ADD COLUMN IF NOT EXISTS notes TEXT DEFAULT '';
+ALTER TABLE important_dates ADD COLUMN IF NOT EXISTS count_mode TEXT DEFAULT 'countdown';
+ALTER TABLE important_dates ADD COLUMN IF NOT EXISTS sort_order INTEGER DEFAULT 0;
+ALTER TABLE important_dates ADD COLUMN IF NOT EXISTS show_on_home BOOLEAN DEFAULT true;
+
+ALTER PUBLICATION supabase_realtime ADD TABLE danmaku;
+
+-- 10. 时间线自定义照片表
+CREATE TABLE IF NOT EXISTS timeline_photos (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  url TEXT NOT NULL,
+  caption TEXT DEFAULT '',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+ALTER TABLE timeline_photos ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "认证用户可读" ON timeline_photos;
+DROP POLICY IF EXISTS "认证用户可写" ON timeline_photos;
+DROP POLICY IF EXISTS "认证用户可更新" ON timeline_photos;
+DROP POLICY IF EXISTS "认证用户可删除" ON timeline_photos;
+CREATE POLICY "认证用户可读" ON timeline_photos FOR SELECT USING (auth.role() = 'authenticated');
+CREATE POLICY "认证用户可写" ON timeline_photos FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "认证用户可更新" ON timeline_photos FOR UPDATE USING (auth.role() = 'authenticated');
+CREATE POLICY "认证用户可删除" ON timeline_photos FOR DELETE USING (auth.role() = 'authenticated');
+
+-- 8. 食谱表
+CREATE TABLE IF NOT EXISTS recipes (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  ingredients TEXT DEFAULT '',
+  steps TEXT DEFAULT '',
+  cooking_time TEXT DEFAULT '',
+  notes TEXT DEFAULT '',
+  photo_url TEXT DEFAULT '',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+ALTER TABLE recipes ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "认证用户可读" ON recipes;
+DROP POLICY IF EXISTS "认证用户可写" ON recipes;
+DROP POLICY IF EXISTS "认证用户可更新" ON recipes;
+DROP POLICY IF EXISTS "认证用户可删除" ON recipes;
+CREATE POLICY "认证用户可读" ON recipes FOR SELECT USING (auth.role() = 'authenticated');
+CREATE POLICY "认证用户可写" ON recipes FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "认证用户可更新" ON recipes FOR UPDATE USING (auth.role() = 'authenticated');
+CREATE POLICY "认证用户可删除" ON recipes FOR DELETE USING (auth.role() = 'authenticated');
+
+-- 9. 美食记录表
+CREATE TABLE IF NOT EXISTS food_records (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  dish_name TEXT NOT NULL,
+  restaurant TEXT DEFAULT '',
+  location TEXT DEFAULT '',
+  photo_url TEXT DEFAULT '',
+  notes TEXT DEFAULT '',
+  allergies TEXT DEFAULT '',
+  record_date DATE NOT NULL DEFAULT now(),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+ALTER TABLE food_records ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "认证用户可读" ON food_records;
+DROP POLICY IF EXISTS "认证用户可写" ON food_records;
+DROP POLICY IF EXISTS "认证用户可更新" ON food_records;
+DROP POLICY IF EXISTS "认证用户可删除" ON food_records;
+CREATE POLICY "认证用户可读" ON food_records FOR SELECT USING (auth.role() = 'authenticated');
+CREATE POLICY "认证用户可写" ON food_records FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "认证用户可更新" ON food_records FOR UPDATE USING (auth.role() = 'authenticated');
+CREATE POLICY "认证用户可删除" ON food_records FOR DELETE USING (auth.role() = 'authenticated');
+
 -- Storage Buckets（在 Supabase Dashboard → Storage 中手动创建）
 -- ============================================
 -- 创建以下 4 个 bucket：
