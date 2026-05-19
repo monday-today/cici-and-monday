@@ -50,16 +50,13 @@ export function DiaryList({ entries, onDelete, onEdit, onView }: Props) {
                       {new Date(entry.entry_date).toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', weekday: 'long' })}
                     </p>
                   </div>
-                  {/* Right: photos */}
+                  {/* Right: photos — same height as text, keep original ratio */}
                   {entry.image_urls.length > 0 && (
-                    <div className="flex flex-col gap-2 shrink-0" style={{ maxWidth: '30%' }}>
+                    <div className="flex flex-col gap-2 shrink-0 overflow-hidden" style={{ maxWidth: '30%' }}>
                       {entry.image_urls.map((url, i) => (
-                        <img
-                          key={i}
-                          src={url}
-                          alt=""
-                          className="w-full rounded-xl object-contain"
-                        />
+                        <div key={i} className="flex-1 min-h-0">
+                          <img src={url} alt="" className="w-full h-full rounded-xl object-contain" />
+                        </div>
                       ))}
                     </div>
                   )}
