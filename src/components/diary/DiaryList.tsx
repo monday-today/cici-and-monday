@@ -34,49 +34,52 @@ export function DiaryList({ entries, onDelete, onEdit, onView }: Props) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 onClick={() => onView(entry)}
-                className="rounded-card bg-white/10 backdrop-blur-sm p-4 border border-white/10 shadow-sm group cursor-pointer hover:bg-white/[0.14] transition-colors"
+                className="rounded-card bg-white/10 backdrop-blur-sm p-4 border border-white/10 shadow-sm cursor-pointer hover:bg-white/[0.14] transition-colors"
               >
-                <div className="flex items-start justify-between gap-2">
+                <div className="flex gap-3">
+                  {/* Left: text content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       {moodIcons[entry.mood] && <img src={`${CDN}/${moodIcons[entry.mood]}.svg`} alt="" className="w-5 h-5" />}
                       <h3 className="text-sm font-medium text-warm-brown">{entry.title}</h3>
                     </div>
-                    <p className="text-sm text-warm-brown/70 font-light whitespace-pre-wrap line-clamp-3 overflow-hidden break-words">
+                    <p className="text-sm text-warm-brown/70 font-light whitespace-pre-wrap break-words">
                       {entry.content}
                     </p>
-                    {entry.image_urls.length > 0 && (
-                      <div className="flex gap-2 mt-3 overflow-x-auto">
-                        {entry.image_urls.map((url, i) => (
-                          <img
-                            key={i}
-                            src={url}
-                            alt=""
-                            className="w-16 h-16 rounded-xl object-cover shrink-0"
-                          />
-                        ))}
-                      </div>
-                    )}
                     <p className="text-xs text-warm-taupe/40 font-light mt-2">
                       {new Date(entry.entry_date).toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', weekday: 'long' })}
                     </p>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <button
-                      onClick={(e) => { e.stopPropagation(); onEdit(entry) }}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity shrink-0
-                                 w-7 h-7 rounded-full flex items-center justify-center hover:bg-white/10"
-                    >
-                      <Pencil size={12} className="text-white/50" />
-                    </button>
-                    <button
-                      onClick={(e) => { e.stopPropagation(); onDelete(entry.id) }}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity shrink-0
-                                 w-7 h-7 rounded-full flex items-center justify-center hover:bg-red-50"
-                    >
-                      <Trash2 size={12} className="text-red-300" />
-                    </button>
-                  </div>
+                  {/* Right: photos */}
+                  {entry.image_urls.length > 0 && (
+                    <div className="flex flex-col gap-2 shrink-0" style={{ maxWidth: '30%' }}>
+                      {entry.image_urls.map((url, i) => (
+                        <img
+                          key={i}
+                          src={url}
+                          alt=""
+                          className="w-full rounded-xl object-contain"
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+                {/* Bottom action buttons */}
+                <div className="flex gap-2 mt-3 pt-3 border-t border-white/5">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); onEdit(entry) }}
+                    className="flex-1 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white/60 text-xs transition-colors flex items-center justify-center gap-1"
+                  >
+                    <Pencil size={11} />
+                    编辑
+                  </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); onDelete(entry.id) }}
+                    className="flex-1 h-8 rounded-lg bg-red-400/10 hover:bg-red-400/20 text-red-300/70 text-xs transition-colors flex items-center justify-center gap-1"
+                  >
+                    <Trash2 size={11} />
+                    删除
+                  </button>
                 </div>
               </motion.div>
             ))}
